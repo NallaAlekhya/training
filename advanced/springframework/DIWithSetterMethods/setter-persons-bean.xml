@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+        <!-- 1.injecting primitives -->
+        <bean id="address1" class="DIWithSetterMethods.Address">
+        	  <property name="city" ><value>kakinda</value></property>
+        	  <property name="d_no" ><value>3-55</value></property>
+        	  <property name="state" ><value>Andra pradesh</value></property>
+        	  
+        </bean>
+        
+        <!--  autowiring  inject dependent object implicitly  autowire="no/byName/byType/constructor"-->
+        <bean id="person" class="DIWithSetterMethods.Persons" autowire="byType">
+        	<property name="id" ><value>844342</value></property>
+        	<property name="name" ><value>ganga bhavani</value></property>
+        	<!--	2. passing address class object to persons class -->
+        	<!-- 	either using autowiring or using ref attribute <property name="address" ref="address"></property>    -->
+        	
+        	<!-- 3.injectin list collection using setters -->
+        	<property name="list">
+        	  <list>
+        	  <value>java</value>
+        	  <value>dotnet</value>
+        	  </list>
+        	  </property>
+        	  
+        	 	<!-- 3.injectin map collection using setters -->
+        	<property name="map">
+        		<map>
+        			<entry key="844342" value="bhavani"/>
+        			<entry key="12008" value="satish"/>
+        		</map>
+        	  </property>
+        </bean>
+        
+        
+ </beans>

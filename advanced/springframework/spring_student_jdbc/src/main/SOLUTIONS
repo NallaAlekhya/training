@@ -1,0 +1,407 @@
+1.Write a JSP that takes the user’s name and age from a form. 
+-Echo backs the name and age along with a message stating the price of movie tickets. 
+-The price is determined by the age passed to the JSP. 
+-If the age is greater than 62, the movie ticket price is $7.00. 
+-If the user is less than 10 years old, the price is $5.00. 
+-For everyone else, the price is $9.50. 
+
+
+------------html------
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<form action="http://localhost:8081/jsp/JDBC.jsp">
+name:<input type="text" name="name"><br>
+age:<input type="password" name="age"><br>
+<input type="submit" value="check">
+</form>
+</body>
+</html>
+--------------------jsp--------------
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<%
+String u=request.getParameter("name");
+int p=request.getParameter("age");
+if(p>62){
+out.println("price is $7.00");
+}
+else if(p<10){
+out.println("price is $5.00
+%>
+
+</body>
+</html>
+--------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+
+3) Write a spring program which will demonstrates the spring life cycle bean post processor methods. 
+
+------------------------------------------------------HelloWorld.java
+package BeanPost;
+
+public class HelloWorld {
+  private String message;
+
+  public void setMessage(String message){
+     this.message=message;
+  }
+  public void getMessage(){
+     System.out.println("Your Message : "+ message);
+  }
+  public void init(){
+     System.out.println("Bean is init");
+  }
+  public void destroy(){
+     System.out.println("Bean is going to be destroyed");
+  }
+}
+--------------------------------------------------------------------InitHelloWorld.java
+package BeanPost;
+
+import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.beans.BeansException;
+
+public class InitHelloWorld implements BeanPostProcessor {
+  public Object postProcessBeforeInitialization(Object bean, String beanName) 
+     throws BeansException {
+     
+     System.out.println("Before Initialization : " + beanName);
+     return bean; 
+  }
+  public Object postProcessAfterInitialization(Object bean, String beanName) 
+     throws BeansException {
+     
+     System.out.println("After Initialization : " + beanName);
+     return bean; 
+  }
+}
+
+--------------------------------------------------------Main.java
+package BeanPost;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class Main {
+  public static void main(String[] args) {
+     AbstractApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
+
+     HelloWorld a = (HelloWorld) context.getBean("helloWorld");
+     a.getMessage();
+     context.registerShutdownHook();
+  }
+}
+--------------------------------------------------xml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <bean id="helloWorld" class="BeanPost.HelloWorld"
+     init-method="init" destroy-method="destroy">
+     <property name="message" value="spring life cycle  "/>
+  </bean>
+
+  <bean class="BeanPost.InitHelloWorld" />
+
+</beans>
+Output:
+ 
+-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
+
+
+4. Write a simple spring program to implement Dependency injection using constructor method for dependent objects and Map objects.
+
+-------------------main-----------------
+package exam4;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class PersonsMain {
+
+	public static void main(String[] args) {
+			ApplicationContext ctx=new ClassPathXmlApplicationContext("setter-persons-bean.xml");
+			Persons p=(Persons)ctx.getBean("person");
+			p.getDetails();
+			p.getMap();
+
+	}
+
+}
+--------------pojo------
+
+
+package exam4;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+public class Persons {
+	private String name;
+	private int id;
+	//dependent obj
+	private Address address;
+	//map
+	private List<String>list;
+	public Address getAddress() {
+		return address;
+	}
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public List<String> getList() {
+		return list;
+	}
+	public void setList(List<String> list) {
+		this.list = list;
+	}
+	public Map<Integer, String> getMap() {
+		return map;
+	}
+	public void setMap(Map<Integer, String> map) {
+		this.map = map;
+	}
+	private Map<Integer,String>map;
+	
+	public void getDetails() {
+		System.out.println(id+":"+name);
+		System.out.println("address:"+address);
+		Iterator it=list.iterator();
+		System.out.println("list of books are");
+		while(it.hasNext()) {
+			System.out.println(it.next());
+		}
+		System.out.println("**********using map collection**********");
+		Iterator itr=map.keySet().iterator();
+		while(itr.hasNext()) {
+			int key=(int)itr.next();
+			System.out.println(key+":"+map.get(key));
+		}
+	}
+	
+}
+------------------------------ dependent class------------
+
+
+package exam4;
+import java.util.*;
+public class Address {
+	private String city;
+	private String d_no;
+	private String state;
+	
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getD_no() {
+		return d_no;
+	}
+	public void setD_no(String d_no) {
+		this.d_no = d_no;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	@Override
+	public String toString() {
+		return "city=" + city + ", d_no=" + d_no + ", state=" + state;
+	}
+	
+}
+----------------xml------------------
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+        <!-- 1.injecting primitives -->
+        <bean id="address1" class="DIWithSetterMethods.Address">
+        	  <property name="city" ><value>warangal</value></property>
+        	  <property name="d_no" ><value>201</value></property>
+        	  <property name="state" ><value>Telanagana</value></property>
+        	  
+        </bean>
+        
+       
+        <bean id="person" class="DIWithSetterMethods.Persons" autowire="byType">
+        	<property name="id" ><value>323472</value></property>
+        	<property name="name" ><value>Alekhya</value></property>
+        	
+        	<property name="list">
+        	  <list>
+        	  <value>book1</value>
+        	  <value>book2</value>
+        	  </list>
+        	  </property>
+        	  
+        	 	
+        	<property name="map">
+        		<map>
+        			<entry key="342423" value="alekhya"/>
+        			<entry key="342344" value="aravind"/>
+        		</map>
+        	  </property>
+        </bean>
+        
+        
+ </beans>
+ --------------------------------------------------------------------------
+ ----------------------------------------------------------------------------
+
+5Write a spring jdbc program to display all the records from any table from the mysql database. 
+
+
+----------------------DAOIMPL------------
+
+package exam5;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
+
+public class Daoimpl implements Idao {
+	private JdbcTemplate jdbcTemplate;
+
+	public JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
+
+	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
+	}
+
+	@Override
+	public List<Student> getStudents() {
+		String sql="select * from student";
+		return jdbcTemplate.query("select * from student", new ResultSetExtractor<List<Student>>() {
+			public List<Student> extractData(ResultSet rs) throws SQLException,DataAccessException{
+				List<Student>  list=new ArrayList<Student>();
+				while(rs.next()) {
+					Student e=new Student();
+					e.setId(rs.getInt(1));
+					e.setName(rs.getString(2));
+					e.setAge(rs.getInt(3));
+					list.add(e);
+				}
+				return list;
+			}
+			});
+	}
+	
+}
+---------------------------INTERFACEDAO---------------
+
+package exam5;
+
+import java.util.List;
+
+public interface Idao {
+	public List<Student>getStudents();
+
+}
+-----------------MAIN------------------
+
+package exam5;
+
+
+import java.util.List;
+import java.util.Scanner;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class main {
+
+	public static void main(String[] args) {
+ApplicationContext ctx=new ClassPathXmlApplicationContext("exam5xml.xml");
+		
+		//get the reference obj for StudentDaoImpl
+		Daoimpl sdao=(Daoimpl)ctx.getBean("dao");
+		
+		Scanner sc=new Scanner(System.in);
+		List<Student>list=sdao.getStudents();
+		for(Student ele:list)
+			System.out.println(ele.getId()+" "+ele.getName()+" "+ele.getAge());
+
+	}
+
+}
+---------------------POJO-------------------
+package exam5;
+
+public class Student {
+	private int id;
+	private String name;
+	private int age;
+	public Student()
+	{
+		
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+}
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+
+
+
