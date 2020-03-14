@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" type="text/css" href="mystyle.css">
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<h1>College Training Feedback Form</h1>
+</head>
+
+<body>
+<script  src="script.js" type="text/javascript">
+</script>
+<form onsubmit="return func()">
+<table>
+<tr><td><label>Participant Name</label></td><td><input type="text" name="participantName"required></td></tr>
+<tr><td><label>College Name</label></td><td><input type="text" name="collegeName"required></td></tr>
+<tr><td><label>Participant Address </label></td><td><textarea rows="5" cols="20" required></textarea>
+<tr><td><label>Gender</label></td><td><input type="radio" name="gender" required><label>Male</label><input type="radio" name="gender" required><label>Female</label></td></tr>
+<tr><td><label>Email ID</label></td><td><input type="email" name="email" required></td></tr>
+<tr><td><label>Mobile Number</label></td><td><input type="text" name="mobileNumber" pattern="[789][0-9]{9}" required></td></tr>
+<tr><td><label>Trainer's Name</label></td><td><input type="text" id="na" name="trainerName" required></td></tr>
+<tr><td><label>Course Name</label></td><td><input type="text" name="courseName" required></td></tr>
+<tr><td><label>Course Completion date</label></td><td><input type="date" name="dateofcompletion" required></td></tr>
+<tr><td><label>Trainer's Feedback</label></td>
+<td><input list="feed" name="trainerFeedback" id="feedback" autocomplete="on" required></td>
+</tr> 
+<datalist id="feed">
+<option value="Excellent"/>
+<option value="Very Good"/>
+<option value="Good"/>
+<option value="Average"/>
+<option value="Below Average"/>
+</datalist>
+<tr><td><input type="Submit" name="submit" value="Submit Feedback" ></td>
+<td><input type="reset" name="reset" value="Clear" required></td></tr>
+
+
+</table>
+</form>
+
+<div id="d1"></div>
+</body>
+</html>
